@@ -1,0 +1,27 @@
+services:
+  frontend:
+    image: lightosita/my-custom-app:1.0
+    ports:
+      - "8090:80"
+    networks:
+      - app-net
+
+  backend:
+    image: node:20-alpine
+    working_dir: /app
+    command: node -e "require('http').createServer((req,res)=>res.end('backend alive')).listen(3000)"
+    networks:
+      - app-net
+
+  database:
+    image: mongo:7
+    volumes:
+      - db-data:/data/db
+    networks:
+      - app-net
+
+volumes:
+  db-data:
+
+networks:
+  app-net:
